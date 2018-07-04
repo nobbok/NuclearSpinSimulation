@@ -1,4 +1,5 @@
-# Monte-Carlo simulation class. See PRA 97, 062230 (2018).
+# Monte-Carlo simulation class.
+
 import numpy as np
 from simulation import Simulation
 

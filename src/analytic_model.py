@@ -1,12 +1,13 @@
 # class to encapsulate analytic functions which were derived in 
-# Blok, NK et al., Faraday Disc. (2015) XXXCITATION
+# See Blok et al., Farad. Discuss. 184, 173 (2015)
+# Alternative: https://arxiv.org/abs/1802.05996 (Equation 2)
 
 import simulation; reload(simulation)
 import numpy as np
 
 class Faraday(simulation.Simulation):
 
-    def decay_formula(self): #XXX NAME
+    def decay_formula(self):
         """
         Calculates the predicted coherence decay.
 

@@ -1,5 +1,5 @@
 # abstract base class for analytic/MC simulation
-# provides a parameter interface for inheriting classes
+# provides a parameter set/get interface
 
 import abc
 

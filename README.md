@@ -8,4 +8,4 @@ Can handle the following experimental imperfections:
 - Exponentially distributed repumping if the NV is in -1/+1 (similar to Blok et al.)
 - Gaussian quasi-static distribution of the average NV repumping time
 
-This work has been published: N. Kalb et al., PRA 97, 062230 (2018).
+This work has been published: N. Kalb et al., PRA 97, 062230 (2018) (https://arxiv.org/abs/1802.05996).
