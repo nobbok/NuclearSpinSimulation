@@ -11,19 +11,18 @@ class QMC(Simulation):
         Simulation.__init__(self, params)
         self._generate_random_numbers()
 
-    def _generate_random_numbers(self):
+    def compute_fidelity_from_scratch(self):
         """
-        Generates and stores matrices of random numbers for later use in MC sim.
+        wrapper function to run a full cycle of MC simulation with the current parameter setting
+        creates the attribute self.cspin_fidelity as function of entangling attempts
         
         in: void
         out: void
         """
-        nrows = self.get_param('entangling_attempts')
-        ncols = self.get_param('repetitions')
-        self._rns_mw            = np.random.rand(nrows, ncols)
-        self._rns_nv_alpha      = np.random.rand(nrows, ncols)
-        self._rns_nv_init       = np.random.rand(nrows, ncols)
-        self._rns_nv_repump     = np.random.rand(nrows, ncols)
+        self.get_nv_state_during_sequence()
+        self.calc_nuclear_phase_distribution()
+        self.get_carbon_state_fidelity()
+        return
 
     def get_nv_state_during_sequence(self):
         """
@@ -112,19 +111,6 @@ class QMC(Simulation):
                                                 ),
                                             axis = 1) + 1.) /2.
 
-    def compute_fidelity_from_scratch(self):
-        """
-        wrapper function to run a full cycle of MC simulation with the current parameter setting
-        creates the attribute self.cspin_fidelity as function of entangling attempts
-        
-        in: void
-        out: void
-        """
-        self.get_nv_state_during_sequence()
-        self.calc_nuclear_phase_distribution()
-        self.get_carbon_state_fidelity()
-        return
-
     def find_attempts_from_fidelity(self, target):
         """
         finds the number of attempts that returns a fidelity closest to the target fidelity
@@ -136,6 +122,20 @@ class QMC(Simulation):
         Note: No need for binary search as data is typically small. 
         """
         return (np.abs(self.cspin_fidelity - target)).argmin()
+
+    def _generate_random_numbers(self):
+        """
+        Generates and stores matrices of random numbers for later use in MC sim.
+        
+        in: void
+        out: void
+        """
+        nrows = self.get_param('entangling_attempts')
+        ncols = self.get_param('repetitions')
+        self._rns_mw            = np.random.rand(nrows, ncols)
+        self._rns_nv_alpha      = np.random.rand(nrows, ncols)
+        self._rns_nv_init       = np.random.rand(nrows, ncols)
+        self._rns_nv_repump     = np.random.rand(nrows, ncols)
 
     def _repump_phase(self):
         """
