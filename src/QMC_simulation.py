@@ -9,7 +9,6 @@ class QMC(Simulation):
     def __init__(self, params = None):
 
         Simulation.__init__(self, params)
-        self._generate_random_numbers()
 
     def compute_fidelity_from_scratch(self):
         """
@@ -31,6 +30,7 @@ class QMC(Simulation):
         in: void
         out: void
         """
+        self._generate_random_numbers()
 
         init_infidelity = self.get_param('init_infidelity') 
         mw_infidelity   = self.get_param('mw_infidelity') 
@@ -99,17 +99,15 @@ class QMC(Simulation):
         F = (1 + cos(phase))/2
 
         in: void
-        out: void (creates instance attribute cspin_fidelity instead)
+        out: void (creates instance attribute cspin_fidelity for further use instead)
         """
 
+        # access a certain nuclear phase with self.carbon_phases[entangling_attempt][MC_repetition]
         # cumsum calculates the phase that is built up from all entangling attempts
         # average over all MC repetitions via np.average(matrix, axis = 1)
-        # access a certain MC phase with matrix[entangling_attempt][repetition] 
-        self.cspin_fidelity = (np.average(
-                                        np.cos(
-                                                np.cumsum(self.carbon_phases, axis = 0)
-                                                ),
-                                            axis = 1) + 1.) /2.
+        self.cspin_fidelity = np.cumsum(self.carbon_phases, axis = 0)
+        self.cspin_fidelity = np.cos(self.cspin_fidelity)
+        self.cspin_fidelity = (np.average(self.cspin_fidelity, axis = 1) + 1.)/2.
 
     def find_attempts_from_fidelity(self, target):
         """

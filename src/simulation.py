@@ -1,5 +1,5 @@
 # abstract base class for analytic/MC simulation
-# provides a parameter set/get interface
+# provides the parameter interface
 
 import abc
 
@@ -11,16 +11,15 @@ class Simulation(object):
         loads standard settings from parameters.py
 
         kwargs:
-        type params: dict
+        params: type dict
         """
 
-        #load standard settings
-        self._params = self._load_params() #load default parameters from parameters.py
+        self._params = self._load_params()
         self._create_parameter_map()
 
         self.cspin_fidelity = None
 
-        ### loop through custom parameter dictionary to overwrite defaults from parameters.py
+        # loop through custom parameter dictionary to overwrite defaults from parameters.py
         if params:
             for k in params:
                 self.set_param(k , params[k])
@@ -53,7 +52,7 @@ class Simulation(object):
     def _create_parameter_map(self):
         """
         updates the parameter dict with a map to all keys in parameters
-        This mpa is used to set/get parameters
+        This map is used to set/get parameters
         Note that naming collisions in the parameters are not allowed currently. 
         TODO: add JSON support to fix naming collisions (e.g. coherence time for NV and nuclear spin)
         """
